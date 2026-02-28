@@ -1,3 +1,22 @@
 spring:
   application:
     name: order-management
+  datasource:
+    url: jdbc:postgresql://localhost:5432/order_management
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      connection-timeout: 30000
+  liquibase:
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+logging:
+  level:
+    liquibase: error
+    org.springframework.jdbc: error
+    org.springframework.boot.autoconfigure.liquibase: error

@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include: 
+      file: classpath:db/changelog/sql/users/001-create-users_table.sql
