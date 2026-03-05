@@ -11,8 +11,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserPageDto {
-    private List<ResponseUserDto> users;
+public class UserPageResponseDto {
+    private List<UserResponseDto> users;
     private PaginationInfo paginationInfo;
 
     @Getter

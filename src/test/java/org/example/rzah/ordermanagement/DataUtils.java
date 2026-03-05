@@ -1,8 +1,8 @@
 package org.example.rzah.ordermanagement;
 
 import org.example.rzah.ordermanagement.domain.UserEntity;
-import org.example.rzah.ordermanagement.dto.RequestCreatedUserDto;
-import org.example.rzah.ordermanagement.dto.ResponseUserDto;
+import org.example.rzah.ordermanagement.dto.CreatedUserRequestDto;
+import org.example.rzah.ordermanagement.dto.UserResponseDto;
 
 import java.time.LocalDateTime;
 
@@ -43,35 +43,35 @@ public class DataUtils {
         return userEntity;
     }
 
-    public static ResponseUserDto getJohnDoeResponse() {
-        ResponseUserDto responseUserDto = new ResponseUserDto();
-        responseUserDto.setId(1L);
-        responseUserDto.setName(JOHN_DOE_NAME);
-        responseUserDto.setEmail("john_doe@gmail.com");
-        responseUserDto.setCreatedAt(LocalDateTime.of(2026, 1, 1, 10, 11, 12));
-        return responseUserDto;
+    public static UserResponseDto getJohnDoeResponse() {
+        UserResponseDto userResponseDto = new UserResponseDto();
+        userResponseDto.setId(1L);
+        userResponseDto.setName(JOHN_DOE_NAME);
+        userResponseDto.setEmail("john_doe@gmail.com");
+        userResponseDto.setCreatedAt(LocalDateTime.of(2026, 1, 1, 10, 11, 12));
+        return userResponseDto;
     }
 
-    public static ResponseUserDto getMikeSmithResponse() {
-        ResponseUserDto responseUserDto = new ResponseUserDto();
-        responseUserDto.setId(2L);
-        responseUserDto.setName("Mike Smith");
-        responseUserDto.setEmail("mike_smith@gmail.com");
-        responseUserDto.setCreatedAt(LocalDateTime.of(2026, 2, 3, 11, 15, 7));
-        return responseUserDto;
+    public static UserResponseDto getMikeSmithResponse() {
+        UserResponseDto userResponseDto = new UserResponseDto();
+        userResponseDto.setId(2L);
+        userResponseDto.setName("Mike Smith");
+        userResponseDto.setEmail("mike_smith@gmail.com");
+        userResponseDto.setCreatedAt(LocalDateTime.of(2026, 2, 3, 11, 15, 7));
+        return userResponseDto;
     }
 
-    public static RequestCreatedUserDto getJohnDoeRequestCreated() {
-        RequestCreatedUserDto requestCreatedUserDto = new RequestCreatedUserDto();
-        requestCreatedUserDto.setName(JOHN_DOE_NAME);
-        requestCreatedUserDto.setEmail("john_doe@gmail.com");
-        return requestCreatedUserDto;
+    public static CreatedUserRequestDto getJohnDoeRequestCreated() {
+        CreatedUserRequestDto createdUserRequestDto = new CreatedUserRequestDto();
+        createdUserRequestDto.setName(JOHN_DOE_NAME);
+        createdUserRequestDto.setEmail("john_doe@gmail.com");
+        return createdUserRequestDto;
     }
 
-    public static RequestCreatedUserDto getMikeSmithRequestCreated() {
-        RequestCreatedUserDto requestCreatedUserDto = new RequestCreatedUserDto();
-        requestCreatedUserDto.setName("Mike Smith");
-        requestCreatedUserDto.setEmail("mike_smith@gmail.com");
-        return requestCreatedUserDto;
+    public static CreatedUserRequestDto getMikeSmithRequestCreated() {
+        CreatedUserRequestDto createdUserRequestDto = new CreatedUserRequestDto();
+        createdUserRequestDto.setName("Mike Smith");
+        createdUserRequestDto.setEmail("mike_smith@gmail.com");
+        return createdUserRequestDto;
     }
 }

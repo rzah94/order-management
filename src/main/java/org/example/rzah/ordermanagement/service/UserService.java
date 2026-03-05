@@ -1,9 +1,9 @@
 package org.example.rzah.ordermanagement.service;
 
 import org.example.rzah.ordermanagement.domain.UserEntity;
-import org.example.rzah.ordermanagement.dto.RequestCreatedUserDto;
-import org.example.rzah.ordermanagement.dto.ResponseUserDto;
-import org.example.rzah.ordermanagement.dto.UserPageDto;
+import org.example.rzah.ordermanagement.dto.CreatedUserRequestDto;
+import org.example.rzah.ordermanagement.dto.UserResponseDto;
+import org.example.rzah.ordermanagement.dto.UserPageResponseDto;
 import org.example.rzah.ordermanagement.exception.EmailAlreadyExistsException;
 import org.example.rzah.ordermanagement.exception.UserNotFoundException;
 import org.example.rzah.ordermanagement.mapper.UserMapper;
@@ -31,7 +31,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserPageDto getUsers(int page, int size) {
+    public UserPageResponseDto getUsers(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
         Page<UserEntity> userPage = userRepository.findAll(pageable);
 
@@ -39,14 +39,14 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseUserDto getUser(long id) {
+    public UserResponseDto getUser(long id) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(
                 () -> new UserNotFoundException("User " + id + " not found"));
         return userMapper.toDto(userEntity);
     }
 
     @Transactional
-    public ResponseUserDto save(RequestCreatedUserDto userDto) {
+    public UserResponseDto save(CreatedUserRequestDto userDto) {
         UserEntity userEntity = userMapper.toEntity(userDto);
 
         try {

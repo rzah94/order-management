@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestCreatedUserDto {
+public class CreatedUserRequestDto {
     @NotNull(message = "Email is required")
     @NotBlank(message = "Email is required")
     @Email(message = "Email is invalid")

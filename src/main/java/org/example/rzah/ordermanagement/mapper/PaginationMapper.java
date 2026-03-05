@@ -1,6 +1,6 @@
 package org.example.rzah.ordermanagement.mapper;
 
-import org.example.rzah.ordermanagement.dto.UserPageDto;
+import org.example.rzah.ordermanagement.dto.UserPageResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.data.domain.Page;
@@ -13,5 +13,5 @@ public interface PaginationMapper {
     @Mapping(target = "totalElements", expression = "java(page.getTotalElements())")
     @Mapping(target = "hasNext", expression = "java(page.hasNext())")
     @Mapping(target = "hasPrevious", expression = "java(page.hasPrevious())")
-    UserPageDto.PaginationInfo toPaginationInfo(Page<?> page);
+    UserPageResponseDto.PaginationInfo toPaginationInfo(Page<?> page);
 }

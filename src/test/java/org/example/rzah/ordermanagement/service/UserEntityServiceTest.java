@@ -2,9 +2,9 @@ package org.example.rzah.ordermanagement.service;
 
 import org.example.rzah.ordermanagement.DataUtils;
 import org.example.rzah.ordermanagement.domain.UserEntity;
-import org.example.rzah.ordermanagement.dto.RequestCreatedUserDto;
-import org.example.rzah.ordermanagement.dto.ResponseUserDto;
-import org.example.rzah.ordermanagement.dto.UserPageDto;
+import org.example.rzah.ordermanagement.dto.CreatedUserRequestDto;
+import org.example.rzah.ordermanagement.dto.UserPageResponseDto;
+import org.example.rzah.ordermanagement.dto.UserResponseDto;
 import org.example.rzah.ordermanagement.exception.EmailAlreadyExistsException;
 import org.example.rzah.ordermanagement.exception.UserNotFoundException;
 import org.example.rzah.ordermanagement.mapper.UserMapper;
@@ -51,19 +51,19 @@ class UserEntityServiceTest {
                 DataUtils.getMikeSmithPersisted()
         );
 
-        List<ResponseUserDto> expectedResponseUserDto = List.of(
+        List<UserResponseDto> expectedUserResponseDto = List.of(
                 DataUtils.getJohnDoeResponse(),
                 DataUtils.getMikeSmithResponse()
         );
 
         Page<UserEntity> userPage = new PageImpl<>(userEntities, pageable, 1);
-        UserPageDto expectedPageDto = new UserPageDto();
-        expectedPageDto.setUsers(expectedResponseUserDto);
+        UserPageResponseDto expectedPageDto = new UserPageResponseDto();
+        expectedPageDto.setUsers(expectedUserResponseDto);
 
         when(userRepository.findAll(pageable)).thenReturn(userPage);
         when(userPageMapper.toPageDto(userPage, userMapper)).thenReturn(expectedPageDto);
 
-        UserPageDto result = userService.getUsers(page, size);
+        UserPageResponseDto result = userService.getUsers(page, size);
 
         assertThat(result).isEqualTo(expectedPageDto);
         verify(userRepository).findAll(pageable);
@@ -77,19 +77,19 @@ class UserEntityServiceTest {
     void getUser_WhenUserExists_ShouldReturnResponseUserDto() {
 
         UserEntity userEntity = DataUtils.getJohnDoePersisted();
-        ResponseUserDto responseUserDto = DataUtils.getJohnDoeResponse();
+        UserResponseDto userResponseDto = DataUtils.getJohnDoeResponse();
 
         Long userId = userEntity.getId();
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
-        when(userMapper.toDto(userEntity)).thenReturn(responseUserDto);
+        when(userMapper.toDto(userEntity)).thenReturn(userResponseDto);
 
-        ResponseUserDto result = userService.getUser(userId);
+        UserResponseDto result = userService.getUser(userId);
 
-        assertThat(result).isEqualTo(responseUserDto);
-        assertThat(result.getId()).isEqualTo(responseUserDto.getId());
-        assertThat(result.getName()).isEqualTo(responseUserDto.getName());
-        assertThat(result.getEmail()).isEqualTo(responseUserDto.getEmail());
+        assertThat(result).isEqualTo(userResponseDto);
+        assertThat(result.getId()).isEqualTo(userResponseDto.getId());
+        assertThat(result.getName()).isEqualTo(userResponseDto.getName());
+        assertThat(result.getEmail()).isEqualTo(userResponseDto.getEmail());
 
         verify(userRepository).findById(userId);
         verify(userMapper).toDto(userEntity);
@@ -111,19 +111,19 @@ class UserEntityServiceTest {
 
     @Test
     void save_WhenEmailIsUnique_ShouldSaveAndReturnResponseUserDto() {
-        RequestCreatedUserDto requestCreatedUserDto = DataUtils.getJohnDoeRequestCreated();
-        ResponseUserDto responseUserDto = DataUtils.getJohnDoeResponse();
+        CreatedUserRequestDto createdUserRequestDto = DataUtils.getJohnDoeRequestCreated();
+        UserResponseDto userResponseDto = DataUtils.getJohnDoeResponse();
         UserEntity userEntity = DataUtils.getJohnDoeTransient();
         UserEntity savedUserEntity = DataUtils.getJohnDoePersisted();
 
-        when(userMapper.toEntity(requestCreatedUserDto)).thenReturn(userEntity);
+        when(userMapper.toEntity(createdUserRequestDto)).thenReturn(userEntity);
         when(userRepository.save(userEntity)).thenReturn(savedUserEntity);
-        when(userMapper.toDto(savedUserEntity)).thenReturn(responseUserDto);
+        when(userMapper.toDto(savedUserEntity)).thenReturn(userResponseDto);
 
-        ResponseUserDto result = userService.save(requestCreatedUserDto);
+        UserResponseDto result = userService.save(createdUserRequestDto);
 
-        assertThat(result).isEqualTo(responseUserDto);
-        verify(userMapper).toEntity(requestCreatedUserDto);
+        assertThat(result).isEqualTo(userResponseDto);
+        verify(userMapper).toEntity(createdUserRequestDto);
         verify(userRepository).save(userEntity);
         verify(userMapper).toDto(savedUserEntity);
         verifyNoMoreInteractions(userRepository, userMapper);
@@ -131,17 +131,17 @@ class UserEntityServiceTest {
 
     @Test
     void save_whenEmailAlreadyExists_ShouldThrowEmailAlreadyExistsException() {
-        RequestCreatedUserDto requestCreatedUserDto = DataUtils.getJohnDoeRequestCreated();
+        CreatedUserRequestDto createdUserRequestDto = DataUtils.getJohnDoeRequestCreated();
         UserEntity userEntity = DataUtils.getJohnDoeTransient();
 
-        when(userMapper.toEntity(requestCreatedUserDto)).thenReturn(userEntity);
+        when(userMapper.toEntity(createdUserRequestDto)).thenReturn(userEntity);
         when(userRepository.save(userEntity)).thenThrow(DataIntegrityViolationException.class);
 
-        assertThatThrownBy(() -> userService.save(requestCreatedUserDto))
+        assertThatThrownBy(() -> userService.save(createdUserRequestDto))
                 .isInstanceOf(EmailAlreadyExistsException.class)
-                .hasMessage("User with email " + requestCreatedUserDto.getEmail() + " already exists");
+                .hasMessage("User with email " + createdUserRequestDto.getEmail() + " already exists");
 
-        verify(userMapper).toEntity(requestCreatedUserDto);
+        verify(userMapper).toEntity(createdUserRequestDto);
         verify(userRepository).save(userEntity);
         verifyNoMoreInteractions(userRepository);
         verify(userMapper, never()).toDto(any());
