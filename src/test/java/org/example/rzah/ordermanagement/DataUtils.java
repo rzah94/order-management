@@ -7,9 +7,11 @@ import org.example.rzah.ordermanagement.dto.ResponseUserDto;
 import java.time.LocalDateTime;
 
 public class DataUtils {
+    private static final String JOHN_DOE_NAME = "John Doe";
+
     public static UserEntity getJohnDoeTransient() {
         UserEntity userEntity = new UserEntity();
-        userEntity.setName("John Doe");
+        userEntity.setName(JOHN_DOE_NAME);
         userEntity.setEmail("john_doe@gmail.com");
         userEntity.setCreatedAt(LocalDateTime.of(2026, 1, 1, 10, 11, 12));
         return userEntity;
@@ -26,7 +28,7 @@ public class DataUtils {
     public static UserEntity getJohnDoePersisted() {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(1L);
-        userEntity.setName("John Doe");
+        userEntity.setName(JOHN_DOE_NAME);
         userEntity.setEmail("john_doe@gmail.com");
         userEntity.setCreatedAt(LocalDateTime.of(2026, 1, 1, 10, 11, 12));
         return userEntity;
@@ -44,7 +46,7 @@ public class DataUtils {
     public static ResponseUserDto getJohnDoeResponse() {
         ResponseUserDto responseUserDto = new ResponseUserDto();
         responseUserDto.setId(1L);
-        responseUserDto.setName("John Smith");
+        responseUserDto.setName(JOHN_DOE_NAME);
         responseUserDto.setEmail("john_doe@gmail.com");
         responseUserDto.setCreatedAt(LocalDateTime.of(2026, 1, 1, 10, 11, 12));
         return responseUserDto;
@@ -61,7 +63,7 @@ public class DataUtils {
 
     public static RequestCreatedUserDto getJohnDoeRequestCreated() {
         RequestCreatedUserDto requestCreatedUserDto = new RequestCreatedUserDto();
-        requestCreatedUserDto.setName("John Smith");
+        requestCreatedUserDto.setName(JOHN_DOE_NAME);
         requestCreatedUserDto.setEmail("john_doe@gmail.com");
         return requestCreatedUserDto;
     }
