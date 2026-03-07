@@ -14,15 +14,4 @@ import java.util.List;
 public class UserPageResponseDto {
     private List<UserResponseDto> users;
     private PaginationInfo paginationInfo;
-
-    @Getter
-    @Setter
-    public static class PaginationInfo {
-        private int size;
-        private int page;
-        private int totalPages;
-        private long totalElements;
-        private boolean hasNext;
-        private boolean hasPrevious;
-    }
 }
