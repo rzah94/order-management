@@ -1,7 +1,10 @@
 package org.example.rzah.ordermanagement.controller;
 
+import jakarta.validation.ConstraintViolationException;
 import org.example.rzah.ordermanagement.dto.ExceptionHandlerDto;
 import org.example.rzah.ordermanagement.exception.EmailAlreadyExistsException;
+import org.example.rzah.ordermanagement.exception.ProductAlreadyExistsException;
+import org.example.rzah.ordermanagement.exception.ProductNotFoundException;
 import org.example.rzah.ordermanagement.exception.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +20,36 @@ import java.util.List;
 @ControllerAdvice
 public class GlobalControllerAdvice {
     private static final Logger log = LoggerFactory.getLogger(GlobalControllerAdvice.class);
+
+    @ExceptionHandler
+    public ResponseEntity<ExceptionHandlerDto> handleException(ConstraintViolationException e) {
+        List<String> errors = e.getConstraintViolations().stream()
+                .map(violation -> violation.getPropertyPath() + ": " + violation.getMessage())
+                .toList();
+        ExceptionHandlerDto exceptionHandler = new ExceptionHandlerDto(
+                HttpStatus.BAD_REQUEST.value(),
+                "Validation failed for request parameters",
+                errors
+        );
+        return new ResponseEntity<>(exceptionHandler, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler
     public ResponseEntity<ExceptionHandlerDto> handleException(UserNotFoundException e) {
         ExceptionHandlerDto exceptionHandler = new ExceptionHandlerDto(HttpStatus.NOT_FOUND.value(), e.getMessage());
         return new ResponseEntity<>(exceptionHandler, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ExceptionHandlerDto> handleException(ProductNotFoundException e) {
+        ExceptionHandlerDto exceptionHandler = new ExceptionHandlerDto(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        return new ResponseEntity<>(exceptionHandler, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ExceptionHandlerDto> handleException(ProductAlreadyExistsException e) {
+        ExceptionHandlerDto exceptionHandler = new ExceptionHandlerDto(HttpStatus.CONFLICT.value(), e.getMessage());
+        return new ResponseEntity<>(exceptionHandler, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler

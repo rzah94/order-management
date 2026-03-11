@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include: 
       file: classpath:db/changelog/sql/users/001-create-users_table.sql
+  - include:
+      file: classpath:db/changelog/sql/products/001-create-products_table.sql
