@@ -1,5 +1,7 @@
 package org.example.rzah.ordermanagement.service;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.example.rzah.ordermanagement.domain.ProductEntity;
 import org.example.rzah.ordermanagement.dto.CreatedProductRequestDto;
 import org.example.rzah.ordermanagement.dto.ProductPageResponseDto;
@@ -32,6 +34,16 @@ public class ProductService {
     public ProductPageResponseDto getProducts(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ProductEntity> products = productRepository.findAll(pageable);
+        return productPageMapper.toPageDto(products, productMapper);
+    }
+
+    public ProductPageResponseDto searchProducts(int page, int size, String name) {
+        if (name == null) {
+            return getProducts(page, size);
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductEntity> products = productRepository.findByNameContainingIgnoreCase(name, pageable);
         return productPageMapper.toPageDto(products, productMapper);
     }
 

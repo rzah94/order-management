@@ -32,6 +32,16 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<ProductPageResponseDto> searchProducts(
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = "10") @Min(1) @Max(100) int size,
+            @RequestParam(required = false) String name
+    ) {
+        ProductPageResponseDto products = productService.searchProducts(page, size, name);
+        return ResponseEntity.ok(products);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDto> getProductById(@PathVariable Long id) {
         ProductResponseDto productResponseDto = productService.getProductById(id);
@@ -39,8 +49,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDto> createProduct(@Valid @RequestBody CreatedProductRequestDto response) {
-        ProductResponseDto savedProduct = productService.saveProduct(response);
+    public ResponseEntity<ProductResponseDto> createProduct(@Valid @RequestBody CreatedProductRequestDto request) {
+        ProductResponseDto savedProduct = productService.saveProduct(request);
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
 }
